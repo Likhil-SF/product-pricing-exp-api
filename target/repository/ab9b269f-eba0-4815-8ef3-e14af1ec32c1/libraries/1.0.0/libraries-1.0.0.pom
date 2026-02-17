@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ab9b269f-eba0-4815-8ef3-e14af1ec32c1</groupId>
+  <artifactId>libraries</artifactId>
+  <version>1.0.0</version>
+  <name>libraries</name>
+  <properties>
+    <classifier>raml-fragment</classifier>
+    <main>libraries.raml</main>
+    <status>published</status>
+    <originalFormatVersion>1.0</originalFormatVersion>
+    <apiVersion>v1</apiVersion>
+    <projectId>7f43121d-a623-4320-b406-2eb8cb66aae8</projectId>
+    <branchId>master</branchId>
+    <commitId>2cc307c0fd78609ebbe07c2a722f19869c448b75</commitId>
+    <keywords/>
+    <type>raml-fragment</type>
+    <mainFile>libraries.raml</mainFile>
+  </properties>
+  <repositories>
+    <repository>
+      <id>anypoint-exchange</id>
+      <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+    </repository>
+  </repositories>
+</project>
