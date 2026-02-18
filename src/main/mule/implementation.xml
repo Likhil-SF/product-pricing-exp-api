@@ -167,15 +167,6 @@ if(payload.successful ~= true){"updated": payload} else {"failed": payload}]]></
 	"productId" : vars.productId
 }]]]></http:uri-params>
 		</http:request>
-		<ee:transform doc:name="Response"
-			doc:id="d0d45502-4073-4e5d-88a1-ee9b27cdfa23">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-if(payload.successful ~= true){"deleted": payload} else {"failed": payload}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
 		<logger level="INFO" doc:name="end log"
 			doc:id="454a98e3-456d-4d28-9c7e-de6ee78b9b94"
 			message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Delete Product flow Ended",&#10;	"productId": vars.productId,&#10;	"time": now()&#10;}]' />

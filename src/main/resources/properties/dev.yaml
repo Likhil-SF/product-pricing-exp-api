@@ -15,6 +15,7 @@ productApi:
     createProducts: "/api/products"
     updateProduct: "/api/products/"
     deleteProduct: "/api/products/"
+    
   
 request:
   responseTimeOut: "60000"

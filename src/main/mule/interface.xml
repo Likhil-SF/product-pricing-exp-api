@@ -1,63 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
-	<flow name="product-pricing-exp-api-main">
-		<http:listener
-			config-ref="product-pricing-exp-api-httpListenerConfig" path="/api/*">
-			<http:response
-				statusCode="#[vars.httpStatus default 200]">
-				<http:headers>#[vars.outboundHeaders default {}]</http:headers>
-			</http:response>
-			<http:error-response
-				statusCode="#[vars.httpStatus default 500]">
-				<http:body>#[payload]</http:body>
-				<http:headers>#[vars.outboundHeaders default {}]</http:headers>
-			</http:error-response>
-		</http:listener>
-		<ee:transform doc:name="set correlationId"
-			doc:id="eae3e67c-bc16-4142-8adf-0fbeec576548">
-			<ee:message />
-			<ee:variables>
-				<ee:set-variable variableName="correlationId"><![CDATA[%dw 2.0
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <flow name="product-pricing-exp-api-main">
+        <http:listener config-ref="product-pricing-exp-api-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <ee:transform doc:name="set correlationId" doc:id="eae3e67c-bc16-4142-8adf-0fbeec576548">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="correlationId"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.headers.correlationId default uuid()]]></ee:set-variable>
-			</ee:variables>
-		</ee:transform>
-		<apikit:router
-			config-ref="product-pricing-exp-api-config" />
-		<error-handler ref="APIkit-error-handler" />
-	</flow>
-	<flow
-		name="delete:\products\(productId):product-pricing-exp-api-config">
-		<flow-ref
-			doc:name="Flow Reference to  delete-product-sub-flow"
-			doc:id="d2761db1-a536-4785-a79a-dc99c0cb13d0"
-			name="delete-product-sub-flow" />
-	</flow>
-	<flow
-		name="patch:\products\(productId):application\json:product-pricing-exp-api-config">
-		<flow-ref
-			doc:name="Flow Reference to update-product-sub-flow"
-			doc:id="04e43449-9b89-48c8-9ff3-a2c1757ac028"
-			name="update-product-sub-flow" />
-	</flow>
-	<flow name="get:\products:product-pricing-exp-api-config">
-		<flow-ref
-			doc:name="Flow Reference to get-all-products-sub-flow"
-			doc:id="40f3f02d-bc16-4bdd-bbf6-310044b722c8"
-			name="get-all-products-sub-flow" />
-	</flow>
-	<flow
-		name="post:\products:application\json:product-pricing-exp-api-config">
-		<flow-ref
-			doc:name="Flow Reference to create-products-sub-flow"
-			doc:id="6f58195b-4e1b-4209-892a-28a46b6373a4"
-			name="create-products-sub-flow" />
-	</flow>
+            </ee:variables>
+        </ee:transform>
+        <apikit:router config-ref="product-pricing-exp-api-config" />
+        <error-handler ref="APIkit-error-handler" />
+    </flow>
+    <flow name="delete:\products\(productId):product-pricing-exp-api-config">
+        <flow-ref doc:name="Flow Reference to  delete-product-sub-flow" doc:id="d2761db1-a536-4785-a79a-dc99c0cb13d0" name="delete-product-sub-flow" />
+    </flow>
+    <flow name="patch:\products\(productId):application\json:product-pricing-exp-api-config">
+        <flow-ref doc:name="Flow Reference to update-product-sub-flow" doc:id="04e43449-9b89-48c8-9ff3-a2c1757ac028" name="update-product-sub-flow" />
+    </flow>
+    <flow name="get:\products:product-pricing-exp-api-config">
+        <flow-ref doc:name="Flow Reference to get-all-products-sub-flow" doc:id="40f3f02d-bc16-4bdd-bbf6-310044b722c8" name="get-all-products-sub-flow" />
+    </flow>
+    <flow name="post:\products:application\json:product-pricing-exp-api-config">
+        <flow-ref doc:name="Flow Reference to create-products-sub-flow" doc:id="6f58195b-4e1b-4209-892a-28a46b6373a4" name="create-products-sub-flow" />
+    </flow>
 </mule>
