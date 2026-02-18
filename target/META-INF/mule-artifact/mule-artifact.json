@@ -8,7 +8,7 @@
   "secureProperties": [],
   "supportedJavaVersions": [],
   "redeploymentEnabled": true,
-  "name": "ab9b269f-eba0-4815-8ef3-e14af1ec32c1:product-pricing-exp-app:1.0.0",
+  "name": "ab9b269f-eba0-4815-8ef3-e14af1ec32c1:product-pricing-exp-app:1.0.9",
   "minMuleVersion": "4.9.0",
   "requiredProduct": "MULE_EE",
   "classLoaderModelLoaderDescriptor": {
@@ -19,6 +19,7 @@
         "application-types.xml",
         "error-handler.xml",
         "global.xml",
+        "implementation-test-suite.xml",
         "implementation.xml",
         "interface.xml",
         "log4j2.xml",

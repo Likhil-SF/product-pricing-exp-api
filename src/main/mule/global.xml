@@ -3,7 +3,7 @@
     <http:listener-config name="product-pricing-exp-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
-    <apikit:config name="product-pricing-exp-api-config" api="resource::ab9b269f-eba0-4815-8ef3-e14af1ec32c1:product-pricing-exp-api:1.0.3:raml:zip:product-pricing-exp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="product-pricing-exp-api-config" api="resource::ab9b269f-eba0-4815-8ef3-e14af1ec32c1:product-pricing-exp-api:1.0.4:raml:zip:product-pricing-exp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <configuration-properties doc:name="Configuration properties" doc:id="6b7b14d2-3681-4b34-bafa-61257b9e0ff3" file="properties/${env}.yaml" />
     <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="3debfc76-5215-49c9-8732-143187330c05" file="properties\secure-${env}.yaml" key="${key}" />
     <global-property doc:name="Global Property" doc:id="7254d81d-c5d5-432f-aa5f-925e362f59f4" name="env" value="dev" />

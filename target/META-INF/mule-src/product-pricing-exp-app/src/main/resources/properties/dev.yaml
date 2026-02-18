@@ -1,5 +1,6 @@
 api:
-  id: "20494049"
+  id: "20745323"
+  
 
 app:
   host: "0.0.0.0"
@@ -12,8 +13,9 @@ productApi:
   path:
     getProducts: "/api/products"
     createProducts: "/api/products"
-    updateProduct: "/api/product/"
-    deleteProduct: "/api/product/"
+    updateProduct: "/api/products/"
+    deleteProduct: "/api/products/"
+    
   
 request:
   responseTimeOut: "60000"

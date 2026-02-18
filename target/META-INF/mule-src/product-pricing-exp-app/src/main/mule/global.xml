@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
-	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
-http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
-	
-	 <http:listener-config name="product-pricing-exp-api-httpListenerConfig">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+    <http:listener-config name="product-pricing-exp-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
-    <apikit:config name="product-pricing-exp-api-config" api="resource::ab9b269f-eba0-4815-8ef3-e14af1ec32c1:product-pricing-exp-api:1.0.1:raml:zip:product-pricing-exp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-	<configuration-properties doc:name="Configuration properties" doc:id="6b7b14d2-3681-4b34-bafa-61257b9e0ff3" file="properties/${env}.yaml" />
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="3debfc76-5215-49c9-8732-143187330c05" file="properties\secure-${env}.yaml" key="${key}" />
-	<global-property doc:name="Global Property" doc:id="7254d81d-c5d5-432f-aa5f-925e362f59f4" name="env" value="dev" />
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="e7d8cf06-c5c8-4190-b644-2b6b2f0ab306" >
-		 <http:request-connection host="${productApi.host}" port="${productApi.port}" protocol="${productApi.protocol}" />
-  
-	</http:request-config>
-	<global-property doc:name="Global Property" doc:id="19a87b5e-11ad-4c41-ad3d-b186019f5cf9" name="key" value="Mulesoft@2026123" />
-    
-	
-	
+    <apikit:config name="product-pricing-exp-api-config" api="resource::ab9b269f-eba0-4815-8ef3-e14af1ec32c1:product-pricing-exp-api:1.0.4:raml:zip:product-pricing-exp-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <configuration-properties doc:name="Configuration properties" doc:id="6b7b14d2-3681-4b34-bafa-61257b9e0ff3" file="properties/${env}.yaml" />
+    <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="3debfc76-5215-49c9-8732-143187330c05" file="properties\secure-${env}.yaml" key="${key}" />
+    <global-property doc:name="Global Property" doc:id="7254d81d-c5d5-432f-aa5f-925e362f59f4" name="env" value="dev" />
+    <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="e7d8cf06-c5c8-4190-b644-2b6b2f0ab306">
+        <http:request-connection host="${productApi.host}" port="${productApi.port}" protocol="${productApi.protocol}" />
+    </http:request-config>
+    <global-property doc:name="Global Property" doc:id="19a87b5e-11ad-4c41-ad3d-b186019f5cf9" name="key" value="Mulesoft@2026123" />
+    <api-gateway:autodiscovery apiId="20745323" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="29fb8b34-4fb7-4776-86e3-433c3f295c94" flowRef="product-pricing-exp-api-main" />
+    <configuration doc:name="Configuration" doc:id="8ef050eb-29d2-47e5-be60-b7b60adea52d" defaultErrorHandler-ref="global-error-handler" />
 </mule>
