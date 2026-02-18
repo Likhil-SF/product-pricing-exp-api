@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-test-suite.xml" />
+	<munit:test name="getAllProductsFlowTestCase" doc:id="7fbc5498-571a-4bac-91ca-4830db4a729f" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="a817e777-d89e-47c6-b58c-61f10529ebec" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET: /products" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[readUrl("classpath://getProducts/mock-response.dwl")]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="a67d6d77-0633-4d8f-99fc-b68479ae8db8" >
+				<munit:attributes value='#[readUrl("classpath://getProducts/set-query-params.dwl")]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get-all-products-sub-flow" doc:id="7c0317fc-370a-42c9-b0fb-8ca07cdf2d2e" name="get-all-products-sub-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="bb6a7be5-2a59-45a9-bc7e-e50a083efe01" message="Response is Empty" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="createProductsFlowTestCase" doc:id="7c67d185-da56-4da3-9dce-8bd9a85c344b" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c48121c2-14db-4c7d-8668-b84e8625ad26" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="POST: /product" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[readUrl("classpath://createProducts/mock-response.dwl")]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="fda69129-a67c-473f-aa0b-c3ad83274171" >
+				<munit:payload value='#[readUrl("classpath://createProducts/mock-request.dwl")]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to create-products-sub-flow" doc:id="eb578ee8-825d-4aae-9e88-0d5b94b59806" name="create-products-sub-flow" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="d962c24f-9b1f-4798-9219-0bba8b9fe9bf" message="Response is Empty" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="updateProductFlowTestCase" doc:id="8eb6d9e6-6ced-4e3e-aa0d-a46da69f9680" description="Test" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="a299bbc8-093d-45ef-ae4d-54e5d11fa13b" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="PATCH: /product" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[readUrl("classpath://updateProduct/mock-response.dwl")]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="63f53364-4233-4f98-8504-4005a6d98d98" >
+				<munit:payload value='#[readUrl("classpath://updateProduct/mock-request.dwl")]' />
+				<munit:attributes value='#[readUrl("classpath://updateProduct/set-uri-params.dwl")]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to update-product-sub-flow" doc:id="88908d9b-3773-4285-a586-8edb0a8d6f43" name="update-product-sub-flow" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="5a7a8154-e66d-482f-a1f4-13bd8f8bc9bd" message="Response is Empty" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="deleteProductFlowTestCase" doc:id="0724fddc-2e7c-46a3-83be-e44725b682fa" description="Test" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="4bbdbc22-b9aa-4a41-9e61-e6c2d9c4ef33" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Delete: /product" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[readUrl("classpath://deleteProducts/mock-response.dwl")]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="2e579976-4193-4c9e-b49d-c838344e98b1" >
+				<munit:attributes value='#[readUrl("classpath://deleteProducts/set-uri-params.dwl")]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to delete-product-sub-flow" doc:id="703ae521-30ef-4d62-b30f-5f5d1fb69f7a" name="delete-product-sub-flow" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="09eef7f4-bc12-4497-848f-d753c9f74963" message="Response is Empty" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

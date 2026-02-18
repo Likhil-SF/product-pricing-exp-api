@@ -1,0 +1,1 @@
+{queryParams : { currencyCode : 'INR', limit: 10, offset: 0}}

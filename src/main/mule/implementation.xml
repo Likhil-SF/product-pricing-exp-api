@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<sub-flow name="get-all-products-sub-flow" doc:id="a22d9078-76ef-4145-bb8f-27a6d0317580" >
-		<logger level="INFO" doc:name="start log" doc:id="97026444-28bb-42c0-aaba-eb3de3d10267" message="#[output json&#10;---&#10;{&#10;	&quot;correlationId&quot;: vars.correlationId,&#10;	&quot;message&quot;: &quot;Get all Products flow started&quot;,&#10;	&quot;requestedCurrency&quot;: attributes.queryParams.'currencyCode',&#10;	&quot;limit&quot;: attributes.queryParams.'limit',&#10;	&quot;offset&quot;: attributes.queryParams.'offset',&#10;	&quot;time&quot;: now()&#10;}]"/>
-		<ee:transform doc:name="Set CurrencyCode, offset, limit Variable" doc:id="f0736f90-edc5-44eb-a939-26827a566681" >
-			<ee:message >
+	<sub-flow name="get-all-products-sub-flow"
+		doc:id="a22d9078-76ef-4145-bb8f-27a6d0317580">
+		<logger level="INFO" doc:name="start log"
+			doc:id="97026444-28bb-42c0-aaba-eb3de3d10267"
+			message="#[output json&#10;---&#10;{&#10;	&quot;correlationId&quot;: vars.correlationId,&#10;	&quot;message&quot;: &quot;Get all Products flow started&quot;,&#10;	&quot;requestedCurrency&quot;: attributes.queryParams.'currencyCode',&#10;	&quot;limit&quot;: attributes.queryParams.'limit',&#10;	&quot;offset&quot;: attributes.queryParams.'offset',&#10;	&quot;time&quot;: now()&#10;}]" />
+		<ee:transform
+			doc:name="Set CurrencyCode, offset, limit Variable"
+			doc:id="f0736f90-edc5-44eb-a939-26827a566681">
+			<ee:message>
 			</ee:message>
-			<ee:variables >
-				<ee:set-variable variableName="offset" ><![CDATA[%dw 2.0
+			<ee:variables>
+				<ee:set-variable variableName="offset"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.'offset']]></ee:set-variable>
-				<ee:set-variable variableName="limit" ><![CDATA[%dw 2.0
+				<ee:set-variable variableName="limit"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.'limit']]></ee:set-variable>
-				<ee:set-variable variableName="currencyCode" ><![CDATA[%dw 2.0
+				<ee:set-variable variableName="currencyCode"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.'currencyCode']]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<http:request method="GET" doc:name="GET: /products" doc:id="b940866c-8ed9-427e-9e4f-4dae52f22f06" config-ref="HTTP_Request_configuration" path="${productApi.path.getProducts}" sendCorrelationId="ALWAYS" correlationId="#[vars.correlationId]">
-			<http:headers ><![CDATA[#[output application/java
+		<http:request method="GET" doc:name="GET: /products"
+			doc:id="b940866c-8ed9-427e-9e4f-4dae52f22f06"
+			config-ref="HTTP_Request_configuration"
+			path="${productApi.path.getProducts}" sendCorrelationId="ALWAYS"
+			correlationId="#[vars.correlationId]">
+			<http:headers><![CDATA[#[output application/java
 ---{
 	"client_id": p('secure::productApi.clientId'),
 	"client_secret": p('secure::productApi.clientSecret')
 }]]]></http:headers>
-			<http:query-params ><![CDATA[#[output application/java
+			<http:query-params><![CDATA[#[output application/java
 ---
 {
 	"currencyCode": vars.currencyCode,
@@ -39,9 +51,10 @@ attributes.queryParams.'currencyCode']]></ee:set-variable>
 	"offset": vars.offset
 }]]]></http:query-params>
 		</http:request>
-		<ee:transform doc:name="Response" doc:id="ff8ff54d-f080-4c82-b589-5466be1aaae9" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="Response"
+			doc:id="ff8ff54d-f080-4c82-b589-5466be1aaae9">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
@@ -50,20 +63,30 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="end log" doc:id="1ef8010e-ff79-409b-b565-696e34b250f8" message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Get all Products flow Ended",&#10;	"requestedCurrency": vars.currencyCode,&#10;	"limit": vars.limit,&#10;	"offset": vars.offset,&#10;	"time": now()&#10;}]'/>
+		<logger level="INFO" doc:name="end log"
+			doc:id="1ef8010e-ff79-409b-b565-696e34b250f8"
+			message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Get all Products flow Ended",&#10;	"requestedCurrency": vars.currencyCode,&#10;	"limit": vars.limit,&#10;	"offset": vars.offset,&#10;	"time": now()&#10;}]' />
 	</sub-flow>
-	<sub-flow name="create-products-sub-flow" doc:id="75ce7b60-e23f-4cd5-98d8-f75c2c8873b0" >
-		<logger level="INFO" doc:name="start log" doc:id="b092460e-f0c6-420c-9628-a0871440b7bd" message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Create Products flow started",&#10;	"time": now()&#10;}]'/>
-		<http:request method="POST" doc:name="POST: /product" doc:id="7f31f992-8916-474d-a17f-38100a6e1dac" sendCorrelationId="ALWAYS" correlationId="#[vars.correlationId]" config-ref="HTTP_Request_configuration" path="${productApi.path.createProducts}">
-			<http:headers ><![CDATA[#[output application/java
+	<sub-flow name="create-products-sub-flow"
+		doc:id="75ce7b60-e23f-4cd5-98d8-f75c2c8873b0">
+		<logger level="INFO" doc:name="start log"
+			doc:id="b092460e-f0c6-420c-9628-a0871440b7bd"
+			message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Create Products flow started",&#10;	"time": now()&#10;}]' />
+		<http:request method="POST" doc:name="POST: /product"
+			doc:id="7f31f992-8916-474d-a17f-38100a6e1dac"
+			sendCorrelationId="ALWAYS" correlationId="#[vars.correlationId]"
+			config-ref="HTTP_Request_configuration"
+			path="${productApi.path.createProducts}">
+			<http:headers><![CDATA[#[output application/java
 ---{
 	"client_id": p('secure::productApi.clientId'),
 	"client_secret": p('secure::productApi.clientSecret')
 }]]]></http:headers>
 		</http:request>
-		<ee:transform doc:name="Response" doc:id="1908ca20-e701-4a40-b0b7-2f6cf91f5c79" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="Response"
+			doc:id="1908ca20-e701-4a40-b0b7-2f6cf91f5c79">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 var success = payload filter (item) -> item.successful ~= true
 var failure =  payload filter (item) -> item.successful ~= false
@@ -77,56 +100,84 @@ var failure =  payload filter (item) -> item.successful ~= false
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="end log" doc:id="a3dbb7b2-299b-4fd6-a0ca-44026c124794" message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Craete Products flow Ended",&#10;	"time": now()&#10;}]'/>
+		<logger level="INFO" doc:name="end log"
+			doc:id="a3dbb7b2-299b-4fd6-a0ca-44026c124794"
+			message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Craete Products flow Ended",&#10;	"time": now()&#10;}]' />
 	</sub-flow>
-	<sub-flow name="update-product-sub-flow" doc:id="9a91c260-2a80-4b3e-9264-c6c4b3197d93" >
-		<logger level="INFO" doc:name="start log" doc:id="dfc9135c-0d98-431c-9d35-5ca161d31322" message="#[output json&#10;---&#10;{&#10;	&quot;correlationId&quot;: vars.correlationId,&#10;	&quot;message&quot;: &quot;Update Product flow started&quot;,&#10;	&quot;productId&quot;: attributes.uriParams.'productId',&#10;	&quot;time&quot;: now()&#10;}]"/>
-		<set-variable value="#[attributes.uriParams.'productId']" doc:name="Set productId" doc:id="848817a4-6bd6-41bf-b187-860b98f7cf7d" variableName="productId"/>
-		<http:request method="PATCH" doc:name="PATCH: /product" doc:id="1bde3594-6501-4d8a-8bc2-a2383369ae9b" config-ref="HTTP_Request_configuration" sendCorrelationId="ALWAYS" correlationId="#[vars.correlationId]" path="${productApi.path.updateProduct}{productId}">
-			<http:headers ><![CDATA[#[output application/java
+	<sub-flow name="update-product-sub-flow"
+		doc:id="9a91c260-2a80-4b3e-9264-c6c4b3197d93">
+		<logger level="INFO" doc:name="start log"
+			doc:id="dfc9135c-0d98-431c-9d35-5ca161d31322"
+			message="#[output json&#10;---&#10;{&#10;	&quot;correlationId&quot;: vars.correlationId,&#10;	&quot;message&quot;: &quot;Update Product flow started&quot;,&#10;	&quot;productId&quot;: attributes.uriParams.'productId',&#10;	&quot;time&quot;: now()&#10;}]" />
+		<set-variable value="#[attributes.uriParams.'productId']"
+			doc:name="Set productId"
+			doc:id="848817a4-6bd6-41bf-b187-860b98f7cf7d"
+			variableName="productId" />
+		<http:request method="PATCH" doc:name="PATCH: /product"
+			doc:id="1bde3594-6501-4d8a-8bc2-a2383369ae9b"
+			config-ref="HTTP_Request_configuration" sendCorrelationId="ALWAYS"
+			correlationId="#[vars.correlationId]"
+			path="${productApi.path.updateProduct}{productId}">
+			<http:headers><![CDATA[#[output application/java
 ---{
 	"client_id": p('secure::productApi.clientId'),
 	"client_secret": p('secure::productApi.clientSecret')
 }]]]></http:headers>
-			<http:uri-params ><![CDATA[#[output application/java
+			<http:uri-params><![CDATA[#[output application/java
 ---
 {
 	"productId" : vars.productId
 }]]]></http:uri-params>
 		</http:request>
-		<ee:transform doc:name="Response" doc:id="64fecf07-2428-42f6-95b0-92ceaa2029cb" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="Response"
+			doc:id="64fecf07-2428-42f6-95b0-92ceaa2029cb">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 if(payload.successful ~= true){"updated": payload} else {"failed": payload}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="end log" doc:id="6c4eb3a1-5216-4f29-853d-cc23a39d00cc" message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Update Product flow Ended",&#10;	"productId": vars.productId,&#10;	"time": now()&#10;}]'/>
+		<logger level="INFO" doc:name="end log"
+			doc:id="6c4eb3a1-5216-4f29-853d-cc23a39d00cc"
+			message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Update Product flow Ended",&#10;	"productId": vars.productId,&#10;	"time": now()&#10;}]' />
 	</sub-flow>
-	<sub-flow name="delete-product-sub-flow" doc:id="44d0f593-1a28-4558-bf78-05a0b669b3f5" >
-		<logger level="INFO" doc:name="start log" doc:id="f32b47eb-029c-4280-b647-278c023af82a" message="#[output json&#10;---&#10;{&#10;	&quot;correlationId&quot;: vars.correlationId,&#10;	&quot;message&quot;: &quot;Delete Product flow started&quot;,&#10;	&quot;productId&quot;: attributes.uriParams.'productId',&#10;	&quot;time&quot;: now()&#10;}]"/>
-		<set-variable value="#[attributes.uriParams.'productId']" doc:name="Set productId" doc:id="a045f4d2-932b-48bf-942c-3a726524c598" variableName="productId" />
-		<http:request method="DELETE" doc:name="Delete: /product" doc:id="950dd7e4-5604-4d6a-bc38-e1c9ba63a181" config-ref="HTTP_Request_configuration" sendCorrelationId="ALWAYS" correlationId="#[vars.correlationId]" path="${productApi.path.deleteProduct}{productId}">
-			<http:headers ><![CDATA[#[output application/java
+	<sub-flow name="delete-product-sub-flow"
+		doc:id="44d0f593-1a28-4558-bf78-05a0b669b3f5">
+		<logger level="INFO" doc:name="start log"
+			doc:id="f32b47eb-029c-4280-b647-278c023af82a"
+			message="#[output json&#10;---&#10;{&#10;	&quot;correlationId&quot;: vars.correlationId,&#10;	&quot;message&quot;: &quot;Delete Product flow started&quot;,&#10;	&quot;productId&quot;: attributes.uriParams.'productId',&#10;	&quot;time&quot;: now()&#10;}]" />
+		<set-variable value="#[attributes.uriParams.'productId']"
+			doc:name="Set productId"
+			doc:id="a045f4d2-932b-48bf-942c-3a726524c598"
+			variableName="productId" />
+		<http:request method="DELETE" doc:name="Delete: /product"
+			doc:id="950dd7e4-5604-4d6a-bc38-e1c9ba63a181"
+			config-ref="HTTP_Request_configuration" sendCorrelationId="ALWAYS"
+			correlationId="#[vars.correlationId]"
+			path="${productApi.path.deleteProduct}{productId}">
+			<http:headers><![CDATA[#[output application/java
 ---{
 	"client_id": p('secure::productApi.clientId'),
 	"client_secret": p('secure::productApi.clientSecret')
 }]]]></http:headers>
-			<http:uri-params ><![CDATA[#[output application/java
+			<http:uri-params><![CDATA[#[output application/java
 ---
 {
 	"productId" : vars.productId
 }]]]></http:uri-params>
 		</http:request>
-		<ee:transform doc:name="Response" doc:id="d0d45502-4073-4e5d-88a1-ee9b27cdfa23" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="Response"
+			doc:id="d0d45502-4073-4e5d-88a1-ee9b27cdfa23">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 if(payload.successful ~= true){"deleted": payload} else {"failed": payload}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="end log" doc:id="454a98e3-456d-4d28-9c7e-de6ee78b9b94" message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Delete Product flow Ended",&#10;	"productId": vars.productId,&#10;	"time": now()&#10;}]'/>
+		<logger level="INFO" doc:name="end log"
+			doc:id="454a98e3-456d-4d28-9c7e-de6ee78b9b94"
+			message='#[output json&#10;---&#10;{&#10;	"correlationId": vars.correlationId,&#10;	"message": "Delete Product flow Ended",&#10;	"productId": vars.productId,&#10;	"time": now()&#10;}]' />
 	</sub-flow>
 </mule>
