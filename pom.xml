@@ -4,7 +4,7 @@
 
 	<groupId>ab9b269f-eba0-4815-8ef3-e14af1ec32c1</groupId>
 	<artifactId>product-pricing-exp-app</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<packaging>mule-application</packaging>
 
 	<name>product-pricing-exp-app</name>
@@ -79,13 +79,6 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>ab9b269f-eba0-4815-8ef3-e14af1ec32c1</groupId>
-			<artifactId>product-pricing-exp-api</artifactId>
-			<version>1.0.1</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
 			<version>1.11.3</version>
@@ -96,6 +89,13 @@
 			<artifactId>mule-secure-configuration-property-module</artifactId>
 			<version>1.3.0</version>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>ab9b269f-eba0-4815-8ef3-e14af1ec32c1</groupId>
+			<artifactId>product-pricing-exp-api</artifactId>
+			<version>1.0.2</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
 		</dependency>
 	</dependencies>
 
